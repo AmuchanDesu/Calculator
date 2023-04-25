@@ -1,0 +1,95 @@
+package guisql;
+import java.sql.*; 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+
+public class GuiSQL  {
+    
+    public GuiSQL(){
+        
+        JFrame f = new JFrame();
+        JLabel lable1 = new JLabel("insertData");
+        JLabel lablelId = new JLabel("You ID");
+        JLabel lablelName = new JLabel("You Name");
+        JLabel lablelSurName = new JLabel("You Nickname");
+        JLabel lablelAge = new JLabel("You Age");
+        JLabel lablelAB = new JLabel("You Group");
+        JTextField txtId = new JTextField("");
+        JTextField txtName = new JTextField("");
+        JTextField txtSurname = new JTextField("");
+        JTextField txtAge = new JTextField("");
+        JTextField txtAB = new JTextField("");
+        JButton btok = new JButton("OK");
+        
+        
+        
+        lable1.setBounds(200,50,150,20);
+        lablelId.setBounds(80,110,200,20);
+        lablelName.setBounds(80,150,200,20);
+        lablelSurName.setBounds(80,190,200,20);
+        lablelAge.setBounds(80,230,200,20);
+        lablelAB.setBounds(80,270,200,20);
+        txtId.setBounds(180,110,200,20);
+        txtName.setBounds(180,150,200,20);
+        txtSurname.setBounds(180,190,200,20);
+        txtAge.setBounds(180,230,200,20);
+        txtAB.setBounds(180,270,200,20);
+        btok.setBounds(200,320,100,30);
+        btok.addActionListener(new ActionListener ()  {
+            @Override
+    public void actionPerformed(ActionEvent event){
+        try{
+            String myDriver = "com.mysql.cj.jdbc.Driver";
+            Class.forName(myDriver);
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/sdu", "root", "");
+
+            String sql = " insert into student (ID, name, nickname, age, A1orB1)"
+                       + " values (?, ?, ?, ?, ?)";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            
+            ps.setString(1, txtId.getText());
+            ps.setString(2, txtName.getText());
+            ps.setString(3, txtSurname.getText());
+            ps.setString(4, txtAge.getText());
+            //ps.setDate(4, new java.sql.Date(birthdate));
+            ps.setString(5, txtAB.getText());            
+            ps.executeUpdate();
+            JOptionPane.showMessageDialog(null,"Insert finished.");
+            conn.close();
+        }catch(Exception e){
+            System.err.println("Got an exception!");
+            System.out.println(e); 
+        }
+        
+    } 
+        
+               
+        });
+        
+        
+    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    f.add(lable1);
+    f.add(lablelId);
+    f.add(lablelName);
+    f.add(lablelSurName);
+    f.add(lablelAge);
+    f.add(lablelAB);
+    f.add(txtId);
+    f.add(txtName);
+    f.add(txtSurname);
+    f.add(txtAge);
+    f.add(txtAB);
+    f.add(btok);
+    f.setSize(500,400);
+    f.setLayout(null);
+    f.setVisible(true);
+    }
+     
+    
+    public static void main(String[] args) {
+        GuiSQL g =new GuiSQL();
+    }
+ 
+}
